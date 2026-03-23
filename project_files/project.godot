@@ -22,6 +22,7 @@ config/icon="res://icon.svg"
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+xr/use_multiview=false
 
 [xr]
 
