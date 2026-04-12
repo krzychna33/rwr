@@ -8,12 +8,30 @@ size = Vector3(0.1, 0.1, 0.1)
 [sub_resource type="BoxMesh" id="BoxMesh_a0tk4"]
 size = Vector3(0.1, 0.1, 0.1)
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_ig7tw"]
+size = Vector2(20, 20)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ig7tw"]
+albedo_color = Color(0.5672592, 0.44492352, 0.42326587, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0xm2m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2yge"]
+albedo_color = Color(6.256998e-07, 0.64067715, 0.33167508, 1)
+
+[sub_resource type="Environment" id="Environment_ig7tw"]
+ambient_light_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0xm2m"]
+albedo_color = Color(0.74438787, 0.045793287, 0.28401306, 1)
+
 [node name="Node3D" type="Node3D" unique_id=1102785710]
 script = ExtResource("1_a202f")
 
 [node name="XROrigin3D" type="XROrigin3D" parent="." unique_id=624090234]
 
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D" unique_id=590067185]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.79687095, 0)
 
 [node name="LeftController" type="XRController3D" parent="XROrigin3D" unique_id=1888434384]
 tracker = &"left_hand"
@@ -32,4 +50,29 @@ mesh = SubResource("BoxMesh_a0tk4")
 [node name="Button" type="Button" parent="CanvasLayer" unique_id=801207137]
 offset_right = 8.0
 offset_bottom = 8.0
-text = "Enter VR!"
+text = "Enter VR!!"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=90028822]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1920929e-07, 0)
+mesh = SubResource("PlaneMesh_ig7tw")
+surface_material_override/0 = SubResource("StandardMaterial3D_ig7tw")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=912497639]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4800384, 0.41155863, -0.8597088)
+mesh = SubResource("BoxMesh_0xm2m")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="." unique_id=1305111804]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8993821, 2.4428353, 0.38097048)
+mesh = SubResource("BoxMesh_0xm2m")
+surface_material_override/0 = SubResource("StandardMaterial3D_h2yge")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=90840203]
+transform = Transform3D(1, 0, 0, 0, -0.45607314, 0.88994235, 0, -0.88994235, -0.45607314, -0.8131447, 6.5725183, -5.9371614)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=416906669]
+environment = SubResource("Environment_ig7tw")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="." unique_id=132097132]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2107708, 1.0039458, 0.0879488)
+mesh = SubResource("BoxMesh_0xm2m")
+surface_material_override/0 = SubResource("StandardMaterial3D_0xm2m")

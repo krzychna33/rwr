@@ -86,10 +86,19 @@ func _on_left_controller_button_pressed(button: String) -> void:
 func _on_left_controller_button_released(button: String) -> void:
   print ("Button release: " + button)
 
-func _process(_delta: float) -> void:
-  var thumbstick_vector: Vector2 = $XROrigin3D/LeftController.get_vector2("thumbstick")
-  if thumbstick_vector != Vector2.ZERO:
-    print ("Left thumbstick position: " + str(thumbstick_vector))
+func _process(delta: float) -> void:
+    var left_stick = $XROrigin3D/LeftController.get_vector2("thumbstick")
+    if left_stick != Vector2.ZERO:
+        var cam_basis = $XROrigin3D/XRCamera3D.global_transform.basis
+        var forward = -cam_basis.z * left_stick.y
+        var strafe = cam_basis.x * left_stick.x
+        var direction = (forward + strafe).normalized()
+        direction.y = 0
+        $XROrigin3D.global_position += direction * delta * 2.0
+
+    var right_stick = $XROrigin3D/RightController.get_vector2("thumbstick")
+    if right_stick != Vector2.ZERO:
+        $XROrigin3D.rotate_y(-right_stick.x * delta * 1.5)
 
 func _webxr_on_select(input_source_id: int) -> void:
   print("Select: " + str(input_source_id))
