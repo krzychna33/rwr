@@ -2,14 +2,16 @@
 
 [ext_resource type="Script" uid="uid://b74aq41vgfphe" path="res://node_3d.gd" id="1_a202f"]
 [ext_resource type="Script" path="res://orb.gd" id="4_orb"]
+[ext_resource type="Shader" path="res://grass_floor.gdshader" id="5_grass"]
+[ext_resource type="Shader" path="res://wall.gdshader" id="6_wall"]
 [ext_resource type="PackedScene" path="res://hand_left.tscn" id="2_lefthand"]
 [ext_resource type="PackedScene" path="res://hand_right.tscn" id="3_righthand"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ig7tw"]
 size = Vector2(20, 20)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ig7tw"]
-albedo_color = Color(0.5672592, 0.44492352, 0.42326587, 1)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_grass"]
+shader = ExtResource("5_grass")
 
 [sub_resource type="BoxMesh" id="BoxMesh_0xm2m"]
 
@@ -25,8 +27,8 @@ albedo_color = Color(0.74438787, 0.045793287, 0.28401306, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_wall_ns"]
 size = Vector3(20, 10, 0.1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
-albedo_color = Color(0.85, 0.82, 0.78, 1)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wall"]
+shader = ExtResource("6_wall")
 
 [sub_resource type="BoxMesh" id="BoxMesh_wall_ew"]
 size = Vector3(0.1, 10, 20)
@@ -35,7 +37,7 @@ size = Vector3(0.1, 10, 20)
 size = Vector3(20, 0.1, 20)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ceil"]
-albedo_color = Color(0.92, 0.92, 0.9, 1)
+albedo_color = Color(0.65, 0.85, 1.0, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_orb"]
 radius = 0.2
@@ -83,7 +85,7 @@ text = "Enter VR!!"
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=90028822]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1920929e-07, 0)
 mesh = SubResource("PlaneMesh_ig7tw")
-surface_material_override/0 = SubResource("StandardMaterial3D_ig7tw")
+surface_material_override/0 = SubResource("ShaderMaterial_grass")
 
 [node name="Box2" type="StaticBody3D" parent="." unique_id=912497639]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4800384, 0.41155863, -0.8597088)
@@ -125,7 +127,7 @@ transform = Transform3D(-0.9999704, 0, 0.007696942, 0, 1, 0, -0.007696942, 0, -0
 
 [node name="Mesh" type="MeshInstance3D" parent="WallNorth"]
 mesh = SubResource("BoxMesh_wall_ns")
-surface_material_override/0 = SubResource("StandardMaterial3D_wall")
+surface_material_override/0 = SubResource("ShaderMaterial_wall")
 
 [node name="Shape" type="CollisionShape3D" parent="WallNorth"]
 shape = SubResource("BoxShape3D_wall_ns")
@@ -135,7 +137,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 10)
 
 [node name="Mesh" type="MeshInstance3D" parent="WallSouth"]
 mesh = SubResource("BoxMesh_wall_ns")
-surface_material_override/0 = SubResource("StandardMaterial3D_wall")
+surface_material_override/0 = SubResource("ShaderMaterial_wall")
 
 [node name="Shape" type="CollisionShape3D" parent="WallSouth"]
 shape = SubResource("BoxShape3D_wall_ns")
@@ -145,7 +147,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 5, 0)
 
 [node name="Mesh" type="MeshInstance3D" parent="WallEast"]
 mesh = SubResource("BoxMesh_wall_ew")
-surface_material_override/0 = SubResource("StandardMaterial3D_wall")
+surface_material_override/0 = SubResource("ShaderMaterial_wall")
 
 [node name="Shape" type="CollisionShape3D" parent="WallEast"]
 shape = SubResource("BoxShape3D_wall_ew")
@@ -155,7 +157,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 5, 0)
 
 [node name="Mesh" type="MeshInstance3D" parent="WallWest"]
 mesh = SubResource("BoxMesh_wall_ew")
-surface_material_override/0 = SubResource("StandardMaterial3D_wall")
+surface_material_override/0 = SubResource("ShaderMaterial_wall")
 
 [node name="Shape" type="CollisionShape3D" parent="WallWest"]
 shape = SubResource("BoxShape3D_wall_ew")
