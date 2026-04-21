@@ -28,6 +28,10 @@ import/blender/enabled=false
 rendering_device/driver.windows="d3d12"
 xr/use_multiview=false
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot-xr-tools/plugin.cfg")
+
 [xr]
 
 shaders/enabled=true

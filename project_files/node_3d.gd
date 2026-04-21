@@ -1,8 +1,15 @@
 extends Node3D
 
 var webxr_interface
+var _move_shape: SphereShape3D
+var _move_query: PhysicsShapeQueryParameters3D
 
 func _ready() -> void:
+  _move_shape = SphereShape3D.new()
+  _move_shape.radius = 0.3
+  _move_query = PhysicsShapeQueryParameters3D.new()
+  _move_query.shape = _move_shape
+
   $CanvasLayer.visible = false
   $CanvasLayer/Button.pressed.connect(self._on_button_pressed)
 
@@ -86,6 +93,12 @@ func _on_left_controller_button_pressed(button: String) -> void:
 func _on_left_controller_button_released(button: String) -> void:
   print ("Button release: " + button)
 
+func _try_move(delta_pos: Vector3) -> void:
+    var new_pos = $XROrigin3D.global_position + delta_pos
+    _move_query.transform = Transform3D(Basis(), new_pos + Vector3(0, 1.2, 0))
+    if get_world_3d().direct_space_state.intersect_shape(_move_query, 1).is_empty():
+        $XROrigin3D.global_position = new_pos
+
 func _process(delta: float) -> void:
     var left_stick = $XROrigin3D/LeftController.get_vector2("thumbstick")
     if left_stick != Vector2.ZERO:
@@ -94,7 +107,7 @@ func _process(delta: float) -> void:
         var strafe = cam_basis.x * left_stick.x
         var direction = (forward + strafe).normalized()
         direction.y = 0
-        $XROrigin3D.global_position += direction * delta * 2.0
+        _try_move(direction * delta * 2.0)
 
     var right_stick = $XROrigin3D/RightController.get_vector2("thumbstick")
     if right_stick != Vector2.ZERO:
