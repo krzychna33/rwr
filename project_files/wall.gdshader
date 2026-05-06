@@ -1,7 +1,6 @@
 shader_type spatial;
 
 void fragment() {
-	// ściany 20x10m, kafelki ~1x1m
 	vec2 tile_uv = UV * vec2(20.0, 10.0);
 	vec2 tile_id = floor(tile_uv);
 	vec2 tile_fract = fract(tile_uv);
@@ -12,7 +11,6 @@ void fragment() {
 	float brightness = 0.8 + h * 0.35;
 	vec3 color = vec3(0.15, 0.3, 0.75) * brightness;
 
-	// linie między kafelkami
 	float border = 0.05;
 	bool is_border = tile_fract.x < border || tile_fract.x > (1.0 - border)
 	              || tile_fract.y < border || tile_fract.y > (1.0 - border);
@@ -20,7 +18,6 @@ void fragment() {
 		color *= 0.55;
 	}
 
-	// losowe ciemniejsze kafelki
 	if (h2 < 0.1) {
 		color *= 0.75;
 	}

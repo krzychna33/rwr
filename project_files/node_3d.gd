@@ -4,6 +4,9 @@ var webxr_interface
 var _move_shape: SphereShape3D
 var _move_query: PhysicsShapeQueryParameters3D
 
+var _teleport_target: Vector3 = Vector3.ZERO
+var _has_teleport_target: bool = false
+
 func _ready() -> void:
   _move_shape = SphereShape3D.new()
   _move_shape.radius = 0.3
@@ -100,6 +103,8 @@ func _try_move(delta_pos: Vector3) -> void:
         $XROrigin3D.global_position = new_pos
 
 func _process(delta: float) -> void:
+    _update_teleport_target()
+
     var left_stick = $XROrigin3D/LeftController.get_vector2("thumbstick")
     if left_stick != Vector2.ZERO:
         var cam_basis = $XROrigin3D/XRCamera3D.global_transform.basis
@@ -113,12 +118,40 @@ func _process(delta: float) -> void:
     if right_stick != Vector2.ZERO:
         $XROrigin3D.rotate_y(-right_stick.x * delta * 1.5)
 
+func _update_teleport_target() -> void:
+    var camera = $XROrigin3D/XRCamera3D
+    var from = camera.global_position
+    var to = from + (-camera.global_transform.basis.z * 15.0)
+
+    var query = PhysicsRayQueryParameters3D.create(from, to)
+    var result = get_world_3d().direct_space_state.intersect_ray(query)
+
+    if result and result.normal.dot(Vector3.UP) > 0.5:
+        _has_teleport_target = true
+        _teleport_target = result.position
+        $TeleportMarker.visible = true
+        $TeleportMarker.global_position = _teleport_target + Vector3(0, 0.03, 0)
+    else:
+        _has_teleport_target = false
+        $TeleportMarker.visible = false
+
+func _do_teleport() -> void:
+    if not _has_teleport_target:
+        return
+    var camera = $XROrigin3D/XRCamera3D
+    var cam_offset = camera.global_position - $XROrigin3D.global_position
+    cam_offset.y = 0
+    $XROrigin3D.global_position = Vector3(
+        _teleport_target.x - cam_offset.x,
+        _teleport_target.y,
+        _teleport_target.z - cam_offset.z
+    )
+
 func _webxr_on_select(input_source_id: int) -> void:
   print("Select: " + str(input_source_id))
-
-  var tracker: XRPositionalTracker = webxr_interface.get_input_source_tracker(input_source_id)
-  var xform = tracker.get_pose('default').transform
-  print (xform.origin)
+  # input_source_id 1 = prawy kontroler
+  if input_source_id == 1:
+    _do_teleport()
 
 func _webxr_on_select_start(input_source_id: int) -> void:
   print("Select Start: " + str(input_source_id))
